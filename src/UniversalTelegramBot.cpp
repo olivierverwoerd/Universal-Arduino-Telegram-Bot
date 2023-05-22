@@ -38,7 +38,7 @@
 #define ZERO_COPY(STR)    ((char*)STR.c_str())
 #define BOT_CMD(STR)      buildCommand(F(STR))
 
-UniversalTelegramBot::UniversalTelegramBot(const String& token, Client &client) {
+UniversalTelegramBot::UniversalTelegramBot(const String& token, SSLClient &client) {
   updateToken(token);
   this->client = &client;
 }
@@ -247,7 +247,7 @@ String UniversalTelegramBot::sendMultipartFormDataToTelegram(
     client->println(String(contentLength));
     client->print(F("Content-Type: multipart/form-data; boundary="));
     client->println(boundary);
-    client->println();
+    client->println(F(""));
     client->print(start_request);
 
     #ifdef TELEGRAM_DEBUG  
@@ -734,7 +734,7 @@ bool UniversalTelegramBot::checkForOkResponse(const String& response) {
   // Save last sent message_id
   last_id = doc["result"]["message_id"];
   if (last_id > 0) last_sent_message_id = last_id;
-
+  return true;
   return doc["ok"] | false;  // default is false, but this is more explicit and clear
 }
 

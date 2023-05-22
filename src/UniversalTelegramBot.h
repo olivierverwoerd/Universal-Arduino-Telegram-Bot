@@ -22,12 +22,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #ifndef UniversalTelegramBot_h
 #define UniversalTelegramBot_h
 
-//#define TELEGRAM_DEBUG 1
+#define TELEGRAM_DEBUG 1
 #define ARDUINOJSON_DECODE_UNICODE 1
 #define ARDUINOJSON_USE_LONG_LONG 1
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <Client.h>
+#include <Ethernet.h>
+#include <SSLClient.h>
 #include <TelegramCertificate.h>
 
 #define TELEGRAM_HOST "api.telegram.org"
@@ -67,7 +68,7 @@ struct telegramMessage {
 
 class UniversalTelegramBot {
 public:
-  UniversalTelegramBot(const String& token, Client &client);
+  UniversalTelegramBot(const String& token, SSLClient &client);
   void updateToken(const String& token);
   String getToken();
   String sendGetToTelegram(const String& command);
@@ -131,7 +132,7 @@ public:
 private:
   // JsonObject * parseUpdates(String response);
   String _token;
-  Client *client;
+  SSLClient *client;
   void closeClient();
   bool getFile(String& file_path, long& file_size, const String& file_id);
   bool processResult(JsonObject result, int messageIndex);
